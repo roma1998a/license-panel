@@ -4,32 +4,25 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 
-// DB connection (إذا تستخدم MongoDB)
-const connectDB = require('./config/db');
-
-// Routes
-const adminRoutes = require('./routes/admin');
-const licenseRoutes = require('./routes/license');
-const authRoutes = require('./routes/auth');
-
-// Connect DB
-connectDB();
-
-// App init
+// App
 const app = express();
 
-// Middlewares
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static files (frontend)
+// Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// API Routes
-app.use('/api/admin', adminRoutes);
-app.use('/api/license', licenseRoutes);
-app.use('/api/auth', authRoutes);
+// Routes
+try {
+    app.use('/api/admin', require('./routes/admin'));
+    app.use('/api/license', require('./routes/license'));
+    app.use('/api/auth', require('./routes/auth'));
+} catch (err) {
+    console.error('Route load error:', err.message);
+}
 
 // Pages
 app.get('/', (req, res) => {
@@ -40,6 +33,11 @@ app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
+// Health check (مهم لـ Render)
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+});
+
 // 404 handler
 app.use((req, res) => {
     res.status(404).json({
@@ -48,18 +46,9 @@ app.use((req, res) => {
     });
 });
 
-// Error handler
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({
-        success: false,
-        message: 'Internal Server Error'
-    });
-});
-
-// Start server
+// PORT (مهم جداً لـ Render)
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 Server running on port ${PORT}`);
 });
