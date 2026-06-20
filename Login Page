@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login</title>
+</head>
+<body>
+<h2>Admin Login</h2>
+
+<input id="u" placeholder="username">
+<input id="p" placeholder="password" type="password">
+<button onclick="login()">Login</button>
+
+<script>
+async function login(){
+    const res = await fetch('/api/admin/login',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+            username: u.value,
+            password: p.value
+        })
+    });
+
+    const data = await res.json();
+
+    localStorage.setItem('token',data.token);
+    window.location='/dashboard';
+}
+</script>
+
+</body>
+</html>
