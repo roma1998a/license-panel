@@ -1,0 +1,26 @@
+<h1>Dashboard</h1>
+
+<button onclick="create('daily')">Daily</button>
+<button onclick="create('weekly')">Weekly</button>
+<button onclick="load()">Refresh</button>
+
+<pre id="out"></pre>
+
+<script>
+async function create(type){
+    await fetch('/api/license/create',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({type})
+    });
+    load();
+}
+
+async function load(){
+    const res = await fetch('/api/license/all');
+    const data = await res.json();
+    out.innerText = JSON.stringify(data,null,2);
+}
+
+load();
+</script>
