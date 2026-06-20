@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: #ef4444;
+            color: white;
+        }
+
+        button:hover {
+            background: #dc2626;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .small {
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Admin Dashboard</h1>
+
+    <div class="card">
+        <h3>Welcome</h3>
+        <p id="userInfo" class="small">Loading...</p>
+    </div>
+
+    <div class="card">
+        <h3>System Info</h3>
+        <p>License Panel System</p>
+        <p class="small">Status: Active</p>
+    </div>
+
+    <div class="card">
+        <button onclick="logout()">Logout</button>
+    </div>
+</div>
+
+<script>
+// فحص التوكن
+const token = localStorage.getItem('token');
+
+if (!token) {
+    window.location.href = '/';
+}
+
+// عرض معلومات بسيطة
+document.getElementById('userInfo').innerText =
+    "You are logged in with token: " + token;
+
+// تسجيل خروج
+function logout() {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+}
+</script>
+
+</body>
+</html>
