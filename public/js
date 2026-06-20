@@ -1,0 +1,57 @@
+/**
+ * Global App Script
+ */
+
+// Check auth token
+function checkAuth() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        window.location.href = '/';
+    }
+
+    return token;
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('token');
+    window.location.href = '/';
+}
+
+// Show message helper
+function showMessage(id, message, color = 'red') {
+    const el = document.getElementById(id);
+
+    if (!el) return;
+
+    el.innerText = message;
+    el.style.color = color;
+}
+
+// API request helper
+async function apiRequest(url, method = 'GET', data = null) {
+    const token = localStorage.getItem('token');
+
+    const options = {
+        method,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token ? `Bearer ${token}` : ''
+        }
+    };
+
+    if (data) {
+        options.body = JSON.stringify(data);
+    }
+
+    const res = await fetch(url, options);
+    return res.json();
+}
+
+// Auto protect pages
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.pathname === '/dashboard') {
+        checkAuth();
+    }
+});
