@@ -1,8 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-// Fake users DB (admin )
-let users = [];
+// Fake users DB (admin only)
+let users = [
+    {
+        id: 1,
+        username: "admin",
+        password: "1234"
+    }
+];
 
 /**
  * @route   POST /api/auth/register
@@ -30,7 +36,7 @@ router.post('/register', (req, res) => {
     const newUser = {
         id: Date.now(),
         username,
-        password //    (1234) 
+        password
     };
 
     users.push(newUser);
@@ -73,7 +79,7 @@ router.post('/login', (req, res) => {
 
 /**
  * @route   GET /api/auth/users
- * @desc    Get all users (admin test only)
+ * @desc    Get all users (test only)
  */
 router.get('/users', (req, res) => {
     res.json({
