@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// Fake users DB (للتجربة فقط)
+// Fake users DB (admin )
 let users = [];
 
 /**
@@ -30,7 +30,7 @@ router.post('/register', (req, res) => {
     const newUser = {
         id: Date.now(),
         username,
-        password // ⚠️ بدون تشفير حالياً (للتجربة فقط)
+        password //    (1234) 
     };
 
     users.push(newUser);
